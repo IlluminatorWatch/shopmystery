@@ -1,7 +1,7 @@
 node_modules
-config
-package-lock.json
-public/css
+# config
+# package-lock.json
+# public/css
 # dist
 cypress/fixtures
 cypress/plugins
