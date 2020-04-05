@@ -21,8 +21,8 @@ const config = {
 // if(process.env.NODE_ENV !=="production"){
 //     require("dotenv").config()
 //   }
-// const stripeKey = process.env.Stripe_Secret_key;
-// const stripePublickey = process.env.Stripe_Public_Key;
+const stripeKey = process.env.Stripe_Secret_key;
+const stripePublickey = process.env.Stripe_Public_Key;
 
 // NODE_ENV är i produktion eller dev environment
 

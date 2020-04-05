@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// const Schema = require("mongoose").Schema;
 const UserSchema = mongoose.Schema({
     isadmin: {
         type: Boolean,
@@ -20,11 +20,11 @@ const UserSchema = mongoose.Schema({
     },
     zipcode: {
         type: Number,
-        require: true
+        required: true
     },
     address: {
         type: String,
-        require: true
+        required: true
     },
     resetToken: String,
     expirationToken: Date,
@@ -35,7 +35,7 @@ const UserSchema = mongoose.Schema({
         },
         name: {
             type: String,
-            require: true
+            required: true
         },
         imageUrl: String,
     }],
@@ -46,11 +46,11 @@ const UserSchema = mongoose.Schema({
         },
         quantity: {
             type: Number,
-            require: true
+            required: true
         },
         price: {
             type: Number,
-            require: true
+            required: true
         }
     }]
 });
@@ -72,10 +72,10 @@ UserSchema.methods.addToCart = function (productId) {
 
     const foundItem = this.cart.find(product => product.productId == productId)
 
-        !foundItem ? this.cart.push({
-            productId: productId,
-            quantity: 1
-        }) :
+    !foundItem ? this.cart.push({
+        productId: productId,
+        quantity: 1
+    }) :
         foundItem.quantity++
 
     return this.save()
@@ -112,15 +112,20 @@ UserSchema.methods.removeProductInCart = function (productId) {
     return this.save()
 
 }
+// userSchema.methods.clearCart = function () {
+//     this.cart = { items: [] };
+//     return this.save();
+// };
+
 
 const User = mongoose.model("User", UserSchema)
 
 module.exports = User
 
 // const mongoose = require('mongoose');
- 
+
 // const Schema = mongoose.Schema;
- 
+
 // const userSchema = new Schema({
 //   email: {
 //     type: String,
@@ -145,14 +150,14 @@ module.exports = User
 //     ]
 //   }
 // });
- 
+
 // userSchema.methods.addToCart = function(product) {
 //   const cartProductIndex = this.cart.items.findIndex(cp => {
 //     return cp.productId.toString() === product._id.toString();
 //   });
 //   let newQuantity = 1;
 //   const updatedCartItems = [...this.cart.items];
- 
+
 //   if (cartProductIndex >= 0) {
 //     newQuantity = this.cart.items[cartProductIndex].quantity + 1;
 //     updatedCartItems[cartProductIndex].quantity = newQuantity;
@@ -168,7 +173,7 @@ module.exports = User
 //   this.cart = updatedCart;
 //   return this.save();
 // };
- 
+
 // userSchema.methods.removeFromCart = function(productId) {
 //   const updatedCartItems = this.cart.items.filter(item => {
 //     return item.productId.toString() !== productId.toString();
@@ -176,12 +181,12 @@ module.exports = User
 //   this.cart.items = updatedCartItems;
 //   return this.save();
 // };
- 
+
 // userSchema.methods.clearCart = function() {
 //   this.cart = { items: [] };
 //   return this.save();
 // };
- 
+
 // const User = mongoose.model('User', userSchema);
- 
+
 // module.exports = User;

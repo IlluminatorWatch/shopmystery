@@ -9,6 +9,7 @@ const crypto = require("crypto")
 const config = require("../config/config")
 const nodemailer = require("nodemailer")
 const sendGridTransport = require("nodemailer-sendgrid-transport")
+const stripe = require("stripe")("sk_live_9IE8RhTlIaU112ogC2dzxI0d00j4sPzSfM");
 
 const SIGNOUT = '/signout'
 const SIGNIN = '/signin'
@@ -234,5 +235,29 @@ router.get(SIGNOUT, (req, res) => {
 router.get('/profile', verifyToken, checkMsg, async (req, res) => {
     res.render("shop/profile")
 })
+
+router.get("/order", verifyToken, async (req, res) => {
+    const user = await User.findOne({ _id: req.body.user._id }).populate("wishlist.productId")
+})
+// dessa är från stripe inte våra egna namn. de kräver en array [] med hjälp av map. Detta måste vi kunna, viktigt! OBS
+return stripe.checkout.session.create({
+    payment_method_types: ["card"],
+    // från user.js wishlist
+    line_items: user.wishlist.map((product) => {
+        return {
+            name: product.productId.name,
+            amount: product.productId.price * 100, // öre men gånger hundra för kr
+            quantity: 1,
+            currency: "sek"
+        }
+    }),
+    // Dynamisk webadress skickar till heroku eller annan tjänst
+    success_url: req.protocol + "://" + req.get("Host") + ":" + process.env.PORT + "/",
+    cancel_url: "http://localhost:8002/products"
+
+}).then((session, async) => {
+    //console.log(session)
+    res.render("checkout.ejs", { user, sessionId: session.id })
+});
 
 module.exports = router

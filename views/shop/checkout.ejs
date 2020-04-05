@@ -79,8 +79,33 @@
     </div>
 </div>
 
+<form action="" method="post">
+
+    <% user.wishlist.forEach( product=>{ %>
+    <div> <%= product.productId.name %></div>
+    <div> <%= product.productId.price %></div>
+
+    <% }) %>
+
+    <button id="btn" type="submit">Buy</button>
 
 
+
+</form>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    // var stripe = Stripe('pk_test_WXstLeqzn3I2nZ5LyGJHL2MW00MbNXf0gy');
+
+    var stripe = Stripe('pk_live_DJo55AznD4iLUzkYtCR7Meey00JqlEJNMW');
+    document.querySelector("#btn").addEventListener("click", () => {
+
+        // Detta är stripe egna
+        stripe.redirectToCheckout({
+            sessionId: "<%=sessionid%>"
+        })
+
+    })
+</script>
 
 
 <%- include("../includes/footer.ejs") %>
